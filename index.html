@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>EPS Arena</title>
+
+<style>
+body{
+font-family: Arial;
+background:#0f172a;
+color:white;
+text-align:center;
+}
+
+.card{
+background:#1e293b;
+padding:10px;
+margin:10px;
+display:inline-block;
+cursor:pointer;
+}
+
+button{padding:10px;margin:5px;}
+
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<h1>🎮 EPS Arena</h1>
+
+<!-- LOGIN -->
+<div id="login">
+<h2>Connexion élève</h2>
+<input id="user" placeholder="login"><br>
+<input id="pass" type="password" placeholder="mdp"><br>
+<button onclick="login()">Connexion</button>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+
+<h2>Bienvenue <span id="name"></span></h2>
+<p id="stats"></p>
+
+<div class="card" onclick="quiz('football')">⚽ Football</div>
+<div class="card" onclick="quiz('tt')">🏓 Tennis de table</div>
+
+<h3>Interface Prof</h3>
+
+<input id="newCat" placeholder="nouvelle catégorie">
+<button onclick="addCat()">Ajouter</button>
+
+<div id="quiz"></div>
+
+</div>
+
+<script>
+
+let user=null;
+
+let users={
+lucas:{pass:"1234",points:0}
+};
+
+let quizzes={
+football:[
+{q:"Combien de joueurs ?",a:["9","10","11","12"],r:2}
+],
+tt:[
+{q:"Sets ?",a:["2","3","4","5"],r:1}
+]
+};
+
+function login(){
+let u=user=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+if(users[u] && users[u].pass===p){
+user=u;
+document.getElementById("login").classList.add("hidden");
+document.getElementById("app").classList.remove("hidden");
+document.getElementById("name").innerText=u;
+update();
+}else alert("Erreur");
+}
+
+function update(){
+document.getElementById("stats").innerText=
+"Points: "+users[user].points;
+}
+
+function quiz(cat){
+let q=quizzes[cat];
+let html="";
+
+q.forEach(x=>{
+html+="<p>"+x.q+"</p>";
+x.a.forEach((a,i)=>{
+html+=`<button onclick="answer(${i},${x.r})">${a}</button>`;
+});
+});
+
+document.getElementById("quiz").innerHTML=html;
+}
+
+function answer(i,r){
+if(i===r){
+alert("+10 points");
+users[user].points+=10;
+update();
+}else alert("mauvaise réponse");
+}
+
+function addCat(){
+let c=document.getElementById("newCat").value;
+quizzes[c]=[{q:"Question test ?",a:["A","B","C","D"],r:0}];
+alert("catégorie ajoutée");
+}
+
+</script>
+
+</body>
+</html>
