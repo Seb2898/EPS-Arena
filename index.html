@@ -2,21 +2,83 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>EPS TEST</title>
+<title>EPS Arena</title>
 </head>
 
 <body style="font-family:Arial;text-align:center;background:#0f172a;color:white;">
 
-<h1>EPS TEST OK</h1>
+<h1>🎮 EPS Arena</h1>
 
-<button onclick="test()">Clique moi</button>
+<!-- 🏠 ACCUEIL -->
+<div id="home">
+<h2>Choisir un profil</h2>
+<button onclick="student()">👦 Élève</button>
+<button onclick="teacher()">👨‍🏫 Professeur</button>
+</div>
 
-<p id="msg"></p>
+<!-- 🔐 LOGIN -->
+<div id="login" style="display:none;">
+<h2 id="title"></h2>
+
+<input id="user" placeholder="login"><br><br>
+<input id="pass" type="password" placeholder="mot de passe"><br><br>
+<button onclick="login()">Connexion</button>
+</div>
+
+<!-- 🎮 APP -->
+<div id="app" style="display:none;">
+<h2>Bienvenue <span id="name"></span></h2>
+
+<p>Tu es connecté ✔</p>
+</div>
 
 <script>
 
-function test(){
-document.getElementById("msg").innerText = "✔ JavaScript fonctionne";
+let role = "";
+let currentUser = "";
+
+function student(){
+role = "student";
+document.getElementById("home").style.display="none";
+document.getElementById("login").style.display="block";
+document.getElementById("title").innerText="Connexion Élève";
+}
+
+function teacher(){
+role = "teacher";
+document.getElementById("home").style.display="none";
+document.getElementById("login").style.display="block";
+document.getElementById("title").innerText="Connexion Professeur";
+}
+
+function login(){
+
+let u = document.getElementById("user").value;
+let p = document.getElementById("pass").value;
+
+/* élève test */
+if(role === "student"){
+if(u === "lucas" && p === "1234"){
+enter(u);
+}else{
+alert("Erreur élève");
+}
+}
+
+/* prof test */
+if(role === "teacher"){
+if(p === "prof123"){
+enter("prof");
+}else{
+alert("Erreur prof");
+}
+}
+}
+
+function enter(name){
+document.getElementById("login").style.display="none";
+document.getElementById("app").style.display="block";
+document.getElementById("name").innerText=name;
 }
 
 </script>
