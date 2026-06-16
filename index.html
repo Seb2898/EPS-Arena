@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>EPS Arena</title>
+<title>EPS Arena PRO</title>
 
 <style>
 body{
@@ -12,30 +12,40 @@ color:white;
 text-align:center;
 }
 
+.hidden{display:none;}
+
 .card{
 background:#1e293b;
 padding:10px;
 margin:10px;
 display:inline-block;
 cursor:pointer;
+border-radius:8px;
 }
 
 button{padding:10px;margin:5px;}
 
-.hidden{display:none;}
+input{padding:8px;margin:5px;}
+
+.box{
+background:#111827;
+padding:10px;
+margin:10px;
+border-radius:8px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>🎮 EPS Arena</h1>
+<h1>🎮 EPS Arena PRO</h1>
 
 <!-- LOGIN -->
 <div id="login">
-<h2>Connexion élève</h2>
-<input id="user" placeholder="login"><br>
-<input id="pass" type="password" placeholder="mdp"><br>
-<button onclick="login()">Connexion</button>
+<h2>Connexion</h2>
+<input id="user" placeholder="nom">
+<input id="pass" type="password" placeholder="mdp">
+<button onclick="login()">Entrer</button>
 </div>
 
 <!-- APP -->
@@ -44,13 +54,36 @@ button{padding:10px;margin:5px;}
 <h2>Bienvenue <span id="name"></span></h2>
 <p id="stats"></p>
 
-<div class="card" onclick="quiz('football')">⚽ Football</div>
-<div class="card" onclick="quiz('tt')">🏓 Tennis de table</div>
+<!-- CLASSES -->
+<div class="box">
+<h3>Classes</h3>
+<button onclick="setClass('6A')">6e A</button>
+<button onclick="setClass('5B')">5e B</button>
+</div>
 
-<h3>Interface Prof</h3>
+<!-- ELEVE -->
+<div class="box">
+<h3>Quiz élève</h3>
+<button onclick="quiz('football')">⚽ Football</button>
+<button onclick="quiz('badminton')">🏸 Badminton</button>
+</div>
 
-<input id="newCat" placeholder="nouvelle catégorie">
-<button onclick="addCat()">Ajouter</button>
+<!-- PROF -->
+<div class="box">
+<h3>👨‍🏫 Interface Prof</h3>
+
+<input id="newCat" placeholder="Nouvelle catégorie">
+<button onclick="addCat()">Ajouter catégorie</button>
+
+<input id="q" placeholder="question">
+<input id="a1" placeholder="réponse 1">
+<input id="a2" placeholder="réponse 2">
+<input id="a3" placeholder="réponse 3">
+<input id="a4" placeholder="réponse 4">
+<input id="r" placeholder="bonne réponse (0-3)">
+<button onclick="addQuestion()">Ajouter question</button>
+
+</div>
 
 <div id="quiz"></div>
 
@@ -58,27 +91,28 @@ button{padding:10px;margin:5px;}
 
 <script>
 
-let user=null;
+let currentUser=null;
+let currentClass=null;
 
 let users={
-lucas:{pass:"1234",points:0}
+lucas:{pass:"1234",points:0,class:""}
 };
 
 let quizzes={
 football:[
 {q:"Combien de joueurs ?",a:["9","10","11","12"],r:2}
 ],
-tt:[
-{q:"Sets ?",a:["2","3","4","5"],r:1}
+badminton:[
+{q:"Service ?",a:["haut","bas","libre","nul"],r:0}
 ]
 };
 
 function login(){
-let u=user=document.getElementById("user").value;
+let u=document.getElementById("user").value;
 let p=document.getElementById("pass").value;
 
 if(users[u] && users[u].pass===p){
-user=u;
+currentUser=u;
 document.getElementById("login").classList.add("hidden");
 document.getElementById("app").classList.remove("hidden");
 document.getElementById("name").innerText=u;
@@ -86,9 +120,15 @@ update();
 }else alert("Erreur");
 }
 
+function setClass(c){
+currentClass=c;
+users[currentUser].class=c;
+alert("Classe "+c+" sélectionnée");
+}
+
 function update(){
 document.getElementById("stats").innerText=
-"Points: "+users[user].points;
+"Points: "+users[currentUser].points+" | Classe: "+users[currentUser].class;
 }
 
 function quiz(cat){
@@ -96,10 +136,13 @@ let q=quizzes[cat];
 let html="";
 
 q.forEach(x=>{
-html+="<p>"+x.q+"</p>";
+html+="<div class='box'><p>"+x.q+"</p>";
+
 x.a.forEach((a,i)=>{
 html+=`<button onclick="answer(${i},${x.r})">${a}</button>`;
 });
+
+html+="</div>";
 });
 
 document.getElementById("quiz").innerHTML=html;
@@ -107,16 +150,37 @@ document.getElementById("quiz").innerHTML=html;
 
 function answer(i,r){
 if(i===r){
-alert("+10 points");
-users[user].points+=10;
+alert("Bonne réponse +10");
+users[currentUser].points+=10;
 update();
 }else alert("mauvaise réponse");
 }
 
 function addCat(){
 let c=document.getElementById("newCat").value;
-quizzes[c]=[{q:"Question test ?",a:["A","B","C","D"],r:0}];
-alert("catégorie ajoutée");
+quizzes[c]=[];
+alert("Catégorie ajoutée : "+c);
+}
+
+function addQuestion(){
+let q=document.getElementById("q").value;
+let a1=document.getElementById("a1").value;
+let a2=document.getElementById("a2").value;
+let a3=document.getElementById("a3").value;
+let a4=document.getElementById("a4").value;
+let r=parseInt(document.getElementById("r").value);
+
+let cat=prompt("Dans quelle catégorie ?");
+
+if(!quizzes[cat])quizzes[cat]=[];
+
+quizzes[cat].push({
+q:q,
+a:[a1,a2,a3,a4],
+r:r
+});
+
+alert("Question ajoutée !");
 }
 
 </script>
