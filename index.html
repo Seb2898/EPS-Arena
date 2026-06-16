@@ -2,80 +2,21 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>EPS Arena</title>
-
-<style>
-body{
-font-family: Arial;
-background:#0f172a;
-color:white;
-text-align:center;
-}
-
-.hidden{display:none;}
-
-button{padding:10px;margin:5px;}
-input{padding:8px;margin:5px;}
-
-.box{background:#111827;padding:10px;margin:10px;}
-</style>
+<title>EPS TEST</title>
 </head>
 
-<body>
+<body style="font-family:Arial;text-align:center;background:#0f172a;color:white;">
 
-<h1>🎮 EPS Arena TEST</h1>
+<h1>EPS TEST OK</h1>
 
-<div id="start">
-<button onclick="goStudent()">👦 Élève</button>
-<button onclick="goTeacher()">👨‍🏫 Prof</button>
-</div>
+<button onclick="test()">Clique moi</button>
 
-<div id="login" class="hidden">
-<h2>Login élève</h2>
-<input id="u">
-<input id="p" type="password">
-<button onclick="login()">OK</button>
-</div>
-
-<div id="app" class="hidden">
-
-<h2>App OK</h2>
-
-<button onclick="quiz()">Quiz test</button>
-
-<div id="quiz"></div>
-
-</div>
+<p id="msg"></p>
 
 <script>
 
-let user="lucas";
-let pass="1234";
-
-function goStudent(){
-document.getElementById("start").classList.add("hidden");
-document.getElementById("login").classList.remove("hidden");
-}
-
-function goTeacher(){
-document.getElementById("start").classList.add("hidden");
-document.getElementById("app").classList.remove("hidden");
-}
-
-function login(){
-let a=document.getElementById("u").value;
-let b=document.getElementById("p").value;
-
-if(a==="lucas" && b==="1234"){
-document.getElementById("login").classList.add("hidden");
-document.getElementById("app").classList.remove("hidden");
-}else{
-alert("Erreur");
-}
-}
-
-function quiz(){
-document.getElementById("quiz").innerHTML="<p>OK quiz fonctionne</p>";
+function test(){
+document.getElementById("msg").innerText = "✔ JavaScript fonctionne";
 }
 
 </script>
